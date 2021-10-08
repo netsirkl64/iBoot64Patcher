@@ -97,6 +97,13 @@ int main(int argc, const char * argv[]) {
                 printf("%s: Error doing get_unlock_nvram_patch()!\n", __FUNCTION__);
                 return -1;
             }
+            try {
+                auto p = ibp->get_freshnonce_patch();
+                patches.insert(patches.end(), p.begin(), p.end());
+            } catch (...) {
+                printf("%s: Error doing get_freshnonce_patch()!\n", __FUNCTION__);
+                return -1;
+            }
         }
     }
     

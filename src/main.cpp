@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  iBoot64Patcher
+//  src
 //
 //  Created by tihmstar on 27.09.19.
 //  Copyright © 2019 tihmstar. All rights reserved.

@@ -29,6 +29,14 @@ jobs:
         /Users/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/mac-bootstrap.sh
         /Users/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/mac-build.sh
         /Users/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/mac-post.sh
+    - name: Versioning
+      id: Versioning
+      uses: actions/upload-artifact@v2
+      with:
+        name: Versioning
+        path: |
+          /Users/runner/work/iBoot64Patcher/iBoot64Patcher/latest_build_sha.txt
+          /Users/runner/work/iBoot64Patcher/iBoot64Patcher/latest_build_num.txt
     - name: macOS x86_64 RELEASE Archive
       id: macOS-x86_64-RELEASE-Archive
       uses: actions/upload-artifact@v2

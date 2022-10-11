@@ -24,6 +24,8 @@ int main(int argc, const char * argv[]) {
     char* custom_boot_args = NULL;
     uint64_t cmd_handler_ptr = 0;
     int flags = 0;
+
+    printf("Version: " VERSION_COMMIT_SHA "-" VERSION_COMMIT_COUNT "\n");
     
     if(argc < 3) {
         printf("Usage: %s <iboot_in> <iboot_out> [args]\n", argv[0]);

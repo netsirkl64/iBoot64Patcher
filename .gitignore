@@ -80,3 +80,4 @@ stamp-h2
 swig/*
 test-driver
 xcuserdata
+*.zst

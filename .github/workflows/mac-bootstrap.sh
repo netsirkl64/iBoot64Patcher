@@ -27,6 +27,5 @@ gtar xf macOS_arm64_Debug_Latest.tar.zst -C ${DEP_ROOT}/macOS_arm64_Debug &
 wait
 # gtar xf ${BASE}/Builder_macOS.tar.zst &
 sudo ${PROCURSUS}/bin/apt-get update -qq
-sudo ${PROCURSUS}/bin/apt-get dist-upgrade -yqq
 sudo ${PROCURSUS}/bin/apt-get install llvm-utils -yqq
 sudo mv /usr/local/bin{,1}

@@ -118,7 +118,15 @@ int main(int argc, const char * argv[]) {
         printf("%s: Error doing patch_rsa_check()!\n", __FUNCTION__);
         return -1;
     }
-    
+    /* this shit a test */
+        try {
+        printf("getting get_change_reboot_to_fsboot_patch() patch\n");
+        auto p = ibp->get_change_reboot_to_fsboot_patch();
+        patches.insert(patches.begin(), p.begin(), p.end());
+    } catch (...) {
+        printf("%s: Error doing get_change_reboot_to_fsboot_patch()!\n", __FUNCTION__);
+        return -1;
+    }
     
     /* Write out the patched file... */
     fp = fopen(argv[2], "wb+");

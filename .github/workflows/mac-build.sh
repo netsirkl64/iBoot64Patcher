@@ -10,11 +10,6 @@ export CXX="$(xcrun --find clang++)"
 cd /Users/runner/work/iBoot64Patcher/iBoot64Patcher/
 rm -rf ${DEP_ROOT}/{lib,include}
 ln -sf ${DEP_ROOT}/macOS_x86_64_Release/{lib/,include/} ${DEP_ROOT}/
-git clone https://github.com/verygenericname/liboffsetfinder64
-cd liboffsetfinder64
-RELEASE=1 ./build.sh
-cd ..
-cp liboffsetfinder64/cmake-build-release/liboffsetfinder64.a dep_root/lib/
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM="$(which make)" -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCMAKE_MESSAGE_LOG_LEVEL="WARNING" -G "CodeBlocks - Unix Makefiles" -S ./ -B cmake-build-release-x86_64 -DARCH=x86_64 -DNO_PKGCFG=1
 make -j4 -l4 -C cmake-build-release-x86_64
 

@@ -17,6 +17,7 @@
 using namespace tihmstar::offsetfinder64;
 
 #define FLAG_UNLOCK_NVRAM (1 << 0)
+#define FLAG_CHANGE_FSBOOT (1 << 0)
 
 int main(int argc, const char * argv[]) {
     FILE* fp = NULL;
@@ -32,6 +33,7 @@ int main(int argc, const char * argv[]) {
         printf("\t-b <str>\tApply custom boot args.\n");
         printf("\t-c <cmd> <ptr>\tChange a command handler's pointer (hex).\n");
         printf("\t-n \t\tApply unlock nvram patch.\n");
+        printf("\t-f \t\tApply fsboot unlock patch.\n");
         return -1;
     }
     
@@ -42,6 +44,8 @@ int main(int argc, const char * argv[]) {
             custom_boot_args = (char*) argv[i+1];
         } else if(HAS_ARG("-n", 0)) {
             flags |= FLAG_UNLOCK_NVRAM;
+        } else if(HAS_ARG("-f", 0)) {
+            flags |= FLAG_CHANGE_FSBOOT;
         }else if(HAS_ARG("-c", 2)) {
             cmd_handler_str = (char*) argv[i+1];
             sscanf((char*) argv[i+2], "0x%016llX", &cmd_handler_ptr);
@@ -118,7 +122,7 @@ int main(int argc, const char * argv[]) {
         printf("%s: Error doing patch_rsa_check()!\n", __FUNCTION__);
         return -1;
     }
-    /* this shit a test */
+    if (flags & FLAG_CHANGE_FSBOOT) {
         try {
         printf("getting get_change_reboot_to_fsboot_patch() patch\n");
         auto p = ibp->get_change_reboot_to_fsboot_patch();
@@ -126,6 +130,7 @@ int main(int argc, const char * argv[]) {
     } catch (...) {
         printf("%s: Error doing get_change_reboot_to_fsboot_patch()!\n", __FUNCTION__);
         return -1;
+        }
     }
     
     /* Write out the patched file... */

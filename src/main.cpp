@@ -17,7 +17,7 @@
 using namespace tihmstar::offsetfinder64;
 
 #define FLAG_UNLOCK_NVRAM (1 << 0)
-#define FLAG_CHANGE_FSBOOT (1 << 0)
+#define FLAG_CHANGE_FSBOOT (2 << 0)
 
 int main(int argc, const char * argv[]) {
     FILE* fp = NULL;

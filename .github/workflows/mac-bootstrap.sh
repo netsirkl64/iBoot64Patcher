@@ -8,10 +8,10 @@ export BASE=/Users/runner/work/iBoot64Patcher/iBoot64Patcher/
 cd ${WORKFLOW_ROOT}
 curl -sO https://cdn.cryptiiiic.com/bootstrap/bootstrap_x86_64.tar.zst &
 # curl -sO https://cdn.cryptiiiic.com/bootstrap/Builder_macOS.tar.zst &
-curl -sO https://cdn.cryptiiiic.com/deps/static/macOS/x86_64/macOS_x86_64_Release_Latest.tar.zst &
-curl -sO https://cdn.cryptiiiic.com/deps/static/macOS/arm64/macOS_arm64_Release_Latest.tar.zst &
-curl -sO https://cdn.cryptiiiic.com/deps/static/macOS/x86_64/macOS_x86_64_Debug_Latest.tar.zst &
-curl -sO https://cdn.cryptiiiic.com/deps/static/macOS/arm64/macOS_arm64_Debug_Latest.tar.zst &
+curl -sO https://static.palera.in/cmake_deps/macOS_x86_64_RELEASE.tar.zst &
+curl -sO https://static.palera.in/cmake_deps/macOS_x86_64_DEGUG.tar.zst &
+curl -sO https://static.palera.in/cmake_deps/macOS_arm64_RELEASE.tar.zst &
+curl -sO https://static.palera.in/cmake_deps/macOS_arm64_DEBUG.tar.zst &
 wait
 sudo gtar xf ${WORKFLOW_ROOT}/bootstrap_x86_64.tar.zst -C / --warning=none || true || true &
 echo "${PROCURSUS}/bin" | sudo tee /etc/paths1

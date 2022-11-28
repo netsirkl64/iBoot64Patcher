@@ -18,6 +18,7 @@ using namespace tihmstar::offsetfinder64;
 
 #define FLAG_UNLOCK_NVRAM (1 << 0)
 #define FLAG_CHANGE_FSBOOT (1 << 1)
+#define FLAG_LOCAL_BOOT (1 << 2)
 
 int main(int argc, const char * argv[]) {
     FILE* fp = NULL;
@@ -34,6 +35,7 @@ int main(int argc, const char * argv[]) {
         printf("\t-c <cmd> <ptr>\tChange a command handler's pointer (hex).\n");
         printf("\t-n \t\tApply unlock nvram patch.\n");
         printf("\t-f \t\tApply fsboot unlock patch.\n");
+        printf("\t-l \t\tApply local boot patch.\n");
         return -1;
     }
     
@@ -46,6 +48,8 @@ int main(int argc, const char * argv[]) {
             flags |= FLAG_UNLOCK_NVRAM;
         } else if(HAS_ARG("-f", 0)) {
             flags |= FLAG_CHANGE_FSBOOT;
+         } else if(HAS_ARG("-l", 0)) {
+            flags |= FLAG_LOCAL_BOOT;
         }else if(HAS_ARG("-c", 2)) {
             cmd_handler_str = (char*) argv[i+1];
             sscanf((char*) argv[i+2], "0x%016llX", &cmd_handler_ptr);
@@ -126,6 +130,17 @@ int main(int argc, const char * argv[]) {
         try {
         printf("getting get_change_reboot_to_fsboot_patch() patch\n");
         auto p = ibp->get_change_reboot_to_fsboot_patch();
+        patches.insert(patches.begin(), p.begin(), p.end());
+    } catch (...) {
+        printf("%s: Error doing get_change_reboot_to_fsboot_patch()!\n", __FUNCTION__);
+        return -1;
+        }
+    }
+    
+    if (flags & FLAG_LOCAL_BOOT) {
+        try {
+        printf("getting local_boot_patch() patch\n");
+        auto p = ibp->local_boot_patch();
         patches.insert(patches.begin(), p.begin(), p.end());
     } catch (...) {
         printf("%s: Error doing get_change_reboot_to_fsboot_patch()!\n", __FUNCTION__);

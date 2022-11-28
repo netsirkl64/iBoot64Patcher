@@ -1,4 +1,4 @@
-name: iBoot64Patcher
+name: Build
 
 on:
   push:
@@ -16,55 +16,53 @@ jobs:
     env:
       PROCURSUS: /opt/procursus
       PATH: /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/local/lib/ruby/gems/2.7.0/bin:/usr/local/opt/ruby@2.7/bin:/usr/local/opt/pipx_bin:/Users/runner/.cargo/bin:/usr/local/opt/curl/bin:/usr/local/bin:/usr/local/sbin:/Users/runner/bin:/Users/runner/.yarn/bin:/Users/runner/Library/Android/sdk/tools:/Users/runner/Library/Android/sdk/platform-tools:/Users/runner/Library/Android/sdk/ndk-bundle:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/bin:/bin:/usr/sbin:/sbin:/Users/runner/.dotnet/tools:/Users/runner/.ghcup/bin:/Users/runner/hostedtoolcache/stack/2.7.3/x64
+    
     runs-on: macos-11
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        submodules: 'true'
-        fetch-depth: 0
-    - name: macOS Build
-      id: macOS-Build
-      run: |
-        /Users/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/mac-bootstrap.sh
-        /Users/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/mac-build.sh
-        /Users/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/mac-post.sh
-    - name: Versioning
-      id: Versioning
-      uses: actions/upload-artifact@v2
-      with:
-        name: Versioning
-        path: |
-          /Users/runner/work/iBoot64Patcher/iBoot64Patcher/latest_build_sha.txt
-          /Users/runner/work/iBoot64Patcher/iBoot64Patcher/latest_build_num.txt
-    - name: macOS x86_64 RELEASE Archive
-      id: macOS-x86_64-RELEASE-Archive
-      uses: actions/upload-artifact@v2
-      with:
-        name: iBoot64Patcher-macOS-x86_64-RELEASE
-        path: |
-          /Users/runner/work/iBoot64Patcher/iBoot64Patcher/iBoot64Patcher-macOS-x86_64-*-RELEASE.tar.xz
-    - name: macOS x86_64 DEBUG Archive
-      id: macOS-x86_64-DEBUG-Archive
-      uses: actions/upload-artifact@v2
-      with:
-        name: iBoot64Patcher-macOS-x86_64-DEBUG
-        path: |
-          /Users/runner/work/iBoot64Patcher/iBoot64Patcher/iBoot64Patcher-macOS-x86_64-*-DEBUG.tar.xz
-    - name: macOS arm64 RELEASE Archive
-      id: macOS-arm64-RELEASE-Archive
-      uses: actions/upload-artifact@v2
-      with:
-        name: iBoot64Patcher-macOS-arm64-RELEASE
-        path: |
-          /Users/runner/work/iBoot64Patcher/iBoot64Patcher/iBoot64Patcher-macOS-arm64-*-RELEASE.tar.xz
-    - name: macOS arm64 DEBUG Archive
-      id: macOS-arm64-DEBUG-Archive
-      uses: actions/upload-artifact@v2
-      with:
-        name: iBoot64Patcher-macOS-arm64-DEBUG
-        path: |
-          /Users/runner/work/iBoot64Patcher/iBoot64Patcher/iBoot64Patcher-macOS-arm64-*-DEBUG.tar.xz
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+          fetch-depth: 0
+
+      - name: Build
+        run: |
+          ${{ github.workspace }}/.github/workflows/mac-bootstrap.sh
+          ${{ github.workspace }}/.github/workflows/mac-build.sh
+          ${{ github.workspace }}/.github/workflows/mac-post.sh
+
+      - name: Upload versioning
+        uses: actions/upload-artifact@v2
+        with:
+          name: Versioning
+          path: |
+            ${{ github.workspace }}/latest_build_sha.txt
+            ${{ github.workspace }}/latest_build_num.txt
+
+      - name: Upload x86_64-RELEASE
+        uses: actions/upload-artifact@v2
+        with:
+          name: iBoot64Patcher-macOS-x86_64-RELEASE
+          path: ${{ github.workspace }}/iBoot64Patcher-macOS-x86_64-*-RELEASE.tar.xz
+
+      - name: Upload x86_64-DEBUG
+        uses: actions/upload-artifact@v2
+        with:
+          name: iBoot64Patcher-macOS-x86_64-DEBUG
+          path: ${{ github.workspace }}/iBoot64Patcher-macOS-x86_64-*-DEBUG.tar.xz
+
+      - name: Upload arm64-RELEASE
+        uses: actions/upload-artifact@v2
+        with:
+          name: iBoot64Patcher-macOS-arm64-RELEASE
+          path: ${{ github.workspace }}/iBoot64Patcher-macOS-arm64-*-RELEASE.tar.xz
+
+      - name: Upload arm64-DEBUG
+        uses: actions/upload-artifact@v2
+        with:
+          name: iBoot64Patcher-macOS-arm64-DEBUG
+          path: ${{ github.workspace }}/iBoot64Patcher-macOS-arm64-*-DEBUG.tar.xz
+
   Linux:
     runs-on: ubuntu-latest
     steps:
@@ -73,8 +71,8 @@ jobs:
         with:
           submodules: 'true'
           fetch-depth: 0
-      - name: Linux Build
-        id: Linux
+
+      - name: Build
         uses: addnab/docker-run-action@v3
         with:
           image: debian:buster-slim
@@ -83,29 +81,29 @@ jobs:
             /tmp/Builder/repos/iBoot64Patcher/.github/workflows/linux-bootstrap.sh
             /tmp/Builder/repos/iBoot64Patcher/.github/workflows/linux-build.sh
             /tmp/Builder/repos/iBoot64Patcher/.github/workflows/linux-post.sh
-      - name: Linux x86_64 RELEASE Build
+
+      - name: Build x86_64-RELEASE
         run: |
-          mkdir -p /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/
-          docker cp $(docker ps -ql):/tmp/Builder/repos/iBoot64Patcher/.github/workflows/name1.txt /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/
-          docker cp $(docker ps -ql):/tmp/Builder/repos/iBoot64Patcher/.github/workflows/iBoot64Patcher1.tar.xz /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/
-          mv /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/iBoot64Patcher1.tar.xz /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/$(cat /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/name1.txt)
-      - name: Linux x86_64 DEBUG Build
+          mkdir -p ${{ github.workspace }}/.github/workflows/
+          docker cp $(docker ps -ql):/tmp/Builder/repos/iBoot64Patcher/.github/workflows/name1.txt ${{ github.workspace }}/.github/workflows/
+          docker cp $(docker ps -ql):/tmp/Builder/repos/iBoot64Patcher/.github/workflows/iBoot64Patcher1.tar.xz ${{ github.workspace }}/.github/workflows/
+          mv ${{ github.workspace }}/.github/workflows/iBoot64Patcher1.tar.xz ${{ github.workspace }}/.github/workflows/$(cat ${{ github.workspace }}/.github/workflows/name1.txt)
+
+      - name: Build x86_64-DEBUG
         run: |
-          mkdir -p /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/
-          docker cp $(docker ps -ql):/tmp/Builder/repos/iBoot64Patcher/.github/workflows/name2.txt /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/
-          docker cp $(docker ps -ql):/tmp/Builder/repos/iBoot64Patcher/.github/workflows/iBoot64Patcher2.tar.xz /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/
-          mv /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/iBoot64Patcher2.tar.xz /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/$(cat /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/name2.txt)
-      - name: iBoot64Patcher Linux x86_64 RELEASE Archive
-        id: iBoot64Patcher-Linux-x86_64-RELEASE-Archive
+          mkdir -p ${{ github.workspace }}/.github/workflows/
+          docker cp $(docker ps -ql):/tmp/Builder/repos/iBoot64Patcher/.github/workflows/name2.txt ${{ github.workspace }}/.github/workflows/
+          docker cp $(docker ps -ql):/tmp/Builder/repos/iBoot64Patcher/.github/workflows/iBoot64Patcher2.tar.xz ${{ github.workspace }}/.github/workflows/
+          mv ${{ github.workspace }}/.github/workflows/iBoot64Patcher2.tar.xz ${{ github.workspace }}/.github/workflows/$(cat ${{ github.workspace }}/.github/workflows/name2.txt)
+
+      - name: Upload x86_64-RELEASE
         uses: actions/upload-artifact@v2
         with:
           name: iBoot64Patcher-Linux-x86_64-RELEASE
-          path: |
-            /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/iBoot64Patcher-Linux-x86_64*-RELEASE.tar.xz
-      - name: iBoot64Patcher Linux x86_64 DEBUG Archive
-        id: iBoot64Patcher-Linux-x86_64-DEBUG-Archive
+          path: ${{ github.workspace }}/.github/workflows/iBoot64Patcher-Linux-x86_64*-RELEASE.tar.xz
+
+      - name: Upload x86_64-DEBUG
         uses: actions/upload-artifact@v2
         with:
           name: iBoot64Patcher-Linux-x86_64-DEBUG
-          path: |
-            /home/runner/work/iBoot64Patcher/iBoot64Patcher/.github/workflows/iBoot64Patcher-Linux-x86_64*-DEBUG.tar.xz
+          path: ${{ github.workspace }}/.github/workflows/iBoot64Patcher-Linux-x86_64*-DEBUG.tar.xz

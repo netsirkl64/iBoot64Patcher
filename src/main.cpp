@@ -143,7 +143,7 @@ int main(int argc, const char * argv[]) {
         auto p = ibp->local_boot_patch();
         patches.insert(patches.begin(), p.begin(), p.end());
     } catch (...) {
-        printf("%s: Error doing get_change_reboot_to_fsboot_patch()!\n", __FUNCTION__);
+        printf("%s: Error doing local_boot_patch()!\n", __FUNCTION__);
         return -1;
         }
     }

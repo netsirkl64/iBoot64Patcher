@@ -38,8 +38,8 @@ int main(int argc, const char * argv[]) {
         printf("\t-n \t\tApply unlock nvram patch.\n");
         printf("\t-f \t\tApply fsboot unlock patch.\n");
         printf("\t-l \t\tApply local boot patch.\n");
-        printf("\t-r \t\tApply rename snapshot patch.\n");
-        printf("\t-s \t\tApply rename kernelcache to kernelcachd patch.\n");
+        printf("\t-s \t\tApply rename snapshot patch.\n");
+        printf("\t-r \t\tApply rename kernelcache to kernelcachd patch.\n");
         return -1;
     }
     
@@ -54,9 +54,9 @@ int main(int argc, const char * argv[]) {
             flags |= FLAG_CHANGE_FSBOOT;
         } else if(HAS_ARG("-l", 0)) {
             flags |= FLAG_LOCAL_BOOT;
-        } else if(HAS_ARG("-r", 0)) {
-            flags |= FLAG_RENAME_SNAPSHOT;
         } else if(HAS_ARG("-s", 0)) {
+            flags |= FLAG_RENAME_SNAPSHOT;
+        } else if(HAS_ARG("-r", 0)) {
             flags |= FLAG_KERNELCACHD;
         }else if(HAS_ARG("-c", 2)) {
             cmd_handler_str = (char*) argv[i+1];

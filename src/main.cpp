@@ -19,6 +19,8 @@ using namespace tihmstar::offsetfinder64;
 #define FLAG_UNLOCK_NVRAM (1 << 0)
 #define FLAG_CHANGE_FSBOOT (1 << 1)
 #define FLAG_LOCAL_BOOT (1 << 2)
+#define FLAG_RENAME_SNAPSHOT (1 << 3)
+#define FLAG_KERNELCACHD (1 << 4)
 
 int main(int argc, const char * argv[]) {
     FILE* fp = NULL;
@@ -36,6 +38,8 @@ int main(int argc, const char * argv[]) {
         printf("\t-n \t\tApply unlock nvram patch.\n");
         printf("\t-f \t\tApply fsboot unlock patch.\n");
         printf("\t-l \t\tApply local boot patch.\n");
+        printf("\t-r \t\tApply rename snapshot patch.\n");
+        printf("\t-s \t\tApply rename kernelcache to kernelcachd patch.\n");
         return -1;
     }
     
@@ -48,8 +52,12 @@ int main(int argc, const char * argv[]) {
             flags |= FLAG_UNLOCK_NVRAM;
         } else if(HAS_ARG("-f", 0)) {
             flags |= FLAG_CHANGE_FSBOOT;
-         } else if(HAS_ARG("-l", 0)) {
+        } else if(HAS_ARG("-l", 0)) {
             flags |= FLAG_LOCAL_BOOT;
+        } else if(HAS_ARG("-r", 0)) {
+            flags |= FLAG_RENAME_SNAPSHOT;
+        } else if(HAS_ARG("-s", 0)) {
+            flags |= FLAG_KERNELCACHD;
         }else if(HAS_ARG("-c", 2)) {
             cmd_handler_str = (char*) argv[i+1];
             sscanf((char*) argv[i+2], "0x%016llX", &cmd_handler_ptr);
@@ -139,11 +147,33 @@ int main(int argc, const char * argv[]) {
     
     if (flags & FLAG_LOCAL_BOOT) {
         try {
-        printf("getting local_boot_patch() patch\n");
-        auto p = ibp->local_boot_patch();
+            printf("getting local_boot_patch() patch\n");
+            auto p = ibp->local_boot_patch();
+            patches.insert(patches.begin(), p.begin(), p.end());
+        } catch (...) {
+            printf("%s: Error doing local_boot_patch()!\n", __FUNCTION__);
+            return -1;
+        }
+    }
+    
+    if (flags & FLAG_RENAME_SNAPSHOT) {
+        try {
+            printf("getting renamed_snapshot_patch() patch\n");
+            auto p = ibp->renamed_snapshot_patch();
+            patches.insert(patches.begin(), p.begin(), p.end());
+        } catch (...) {
+            printf("%s: Error doing renamed_snapshot_patch()!\n", __FUNCTION__);
+            return -1;
+        }
+    }
+    
+    if (flags & FLAG_KERNELCACHD) {
+        try {
+        printf("getting rename_kcache_to_kcachd_patch() patch\n");
+        auto p = ibp->rename_kcache_to_kcachd_patch();
         patches.insert(patches.begin(), p.begin(), p.end());
     } catch (...) {
-        printf("%s: Error doing local_boot_patch()!\n", __FUNCTION__);
+        printf("%s: Error doing rename_kcache_to_kcachd_patch()!\n", __FUNCTION__);
         return -1;
         }
     }

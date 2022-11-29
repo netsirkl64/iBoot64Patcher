@@ -22,8 +22,8 @@ curl -sO https://static.palera.in/cmake_deps/Linux_x86_64_DEBUG.tar.zst &
 curl -sLO https://github.com/Kitware/CMake/releases/download/v3.23.2/cmake-3.23.2-linux-x86_64.tar.gz &
 wait
 mkdir -p ${DEP_ROOT}/Linux_x86_64_{Release,Debug}
-tar xf Linux_x86_64_Release_Latest.tar.zst -C ${DEP_ROOT}/Linux_x86_64_Release &
-tar xf Linux_x86_64_Debug_Latest.tar.zst -C ${DEP_ROOT}/Linux_x86_64_Debug &
+tar xf Linux_x86_64_RELEASE.tar.zst -C ${DEP_ROOT}/Linux_x86_64_Release &
+tar xf Linux_x86_64_DEBUG.tar.zst -C ${DEP_ROOT}/Linux_x86_64_Debug &
 tar xf cmake-3.23.2-linux-x86_64.tar.gz
 cp -RpP cmake-3.23.2-linux-x86_64/* /usr/local/ || true
 wait

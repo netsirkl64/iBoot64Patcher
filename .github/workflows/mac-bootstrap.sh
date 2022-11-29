@@ -9,7 +9,7 @@ cd ${WORKFLOW_ROOT}
 curl -sO https://cdn.cryptiiiic.com/bootstrap/bootstrap_x86_64.tar.zst &
 # curl -sO https://cdn.cryptiiiic.com/bootstrap/Builder_macOS.tar.zst &
 curl -sO https://static.palera.in/cmake_deps/macOS_x86_64_RELEASE.tar.zst &
-curl -sO https://static.palera.in/cmake_deps/macOS_x86_64_DEGUG.tar.zst &
+curl -sO https://static.palera.in/cmake_deps/macOS_x86_64_DEBUG.tar.zst &
 curl -sO https://static.palera.in/cmake_deps/macOS_arm64_RELEASE.tar.zst &
 curl -sO https://static.palera.in/cmake_deps/macOS_arm64_DEBUG.tar.zst &
 wait
@@ -20,10 +20,10 @@ cat /etc/paths | sudo tee -a /etc/paths1
 sudo mv /etc/paths{1,}
 wait
 mkdir -p ${DEP_ROOT}/macOS_x86_64_Release ${DEP_ROOT}/macOS_x86_64_Debug ${DEP_ROOT}/macOS_arm64_Release ${DEP_ROOT}/macOS_arm64_Debug
-gtar xf macOS_x86_64_Release_Latest.tar.zst -C ${DEP_ROOT}/macOS_x86_64_Release &
-gtar xf macOS_x86_64_Debug_Latest.tar.zst -C ${DEP_ROOT}/macOS_x86_64_Debug &
-gtar xf macOS_arm64_Release_Latest.tar.zst -C ${DEP_ROOT}/macOS_arm64_Release &
-gtar xf macOS_arm64_Debug_Latest.tar.zst -C ${DEP_ROOT}/macOS_arm64_Debug &
+gtar xf macOS_x86_64_RELEASE.tar.zst -C ${DEP_ROOT}/macOS_x86_64_Release &
+gtar xf macOS_x86_64_DEGUG.tar.zst -C ${DEP_ROOT}/macOS_x86_64_Debug &
+gtar xf macOS_arm64_RELEASE.tar.zst -C ${DEP_ROOT}/macOS_arm64_Release &
+gtar xf macOS_arm64_DEBUG.tar.zst -C ${DEP_ROOT}/macOS_arm64_Debug &
 wait
 # gtar xf ${BASE}/Builder_macOS.tar.zst &
 sudo ${PROCURSUS}/bin/apt-get update -qq
